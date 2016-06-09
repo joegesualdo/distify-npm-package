@@ -1,14 +1,15 @@
-## y [![Build Status](https://travis-ci.org/.svg?branch=master)](https://travis-ci.org/)
-> 
+## distify package [![Build Status](https://travis-ci.org/.svg?branch=master)](https://travis-ci.org/)
+> Write npm modules using latest javascript features.
+
 
 ## Install
 ```
-$ npm install --save y 
+$ npm install --save distify-package
 ```
 
 ## Usage
 ```javascript
-var y = require("y")
+var distifyPackage = require("distify-package")
 
 // insert code example here
 ```

@@ -1,28 +1,41 @@
 {
-  "name": "y",
+  "name": "distify-npm",
   "version": "0.0.1",
-  "description": "",
+  "description": "Write npm modules using latest javascript features.",
   "main": "index.js",
   "scripts": {
     "test": "mocha test.js"
   },
   "repository": "",
-  "keywords": [],
+  "keywords": [
+    "es6",
+    "es7",
+    "npm",
+    "modules",
+    "dist",
+    "distribution",
+    "distify",
+    "npm",
+    "publish",
+    "babel",
+    "ES2015",
+    "ES2016",
+    "webpack"
+  ],
   "author": {
-    "name": ""
+    "name": "Joe Gesualdo"
   },
   "license": "MIT",
-  "devDependencies": {
-    "chai": "*",
-    "mocha": "*",
-    "webpack": "^1.13.1",
+  "dependencies": {
     "babel-core": "^6.4.5",
     "babel-loader": "^6.2.1",
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-stage-0": "^6.3.13",
-    "mocha": "^2.4.5",
     "rimraf": "^2.5.1",
     "webpack": "^1.12.12"
   },
-  "dependencies": {}
+  "devDependencies": {
+    "chai": "*",
+    "mocha": "*"
+  }
 }
