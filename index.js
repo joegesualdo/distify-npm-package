@@ -56,7 +56,10 @@ function distifyNpmPackage(entryFilePath, outputDirectoryPath){
   webpack(webpackConfig(entryFilePath, outputDirectoryPath), function(err, stats) {
     // Do something
     // console.log(err)
-    // console.log(stats.compilation)
+    if (stats.compilation.errors.length > 0) {
+      console.log("There were error compiling:")
+      console.log(stats.compilation.errors)
+    }
   });
 }
 
