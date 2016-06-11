@@ -1,5 +1,6 @@
 var webpack = require('webpack')
 var path = require('path');
+var fs = require('fs');
 
 function webpackConfig(entryFilePath, outputDirectoryPath){
   let entry = {}
