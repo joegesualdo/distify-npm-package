@@ -22,6 +22,9 @@ function webpackConfig(entryFilePath, outputDirectoryPath){
       libraryTarget: 'commonjs2'
     },
 
+    // This was needed to get node programs  to work
+    externals: fs.readdirSync("node_modules"),
+
     resolve: {
       modulesDirectories: [
         'node_modules',
