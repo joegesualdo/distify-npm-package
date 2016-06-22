@@ -2,7 +2,7 @@ var webpack = require('webpack')
 var path = require('path');
 var fs = require('fs');
 
-function webpackConfig(entryFilePath, outputDirectoryPath, isModule, isNode){
+function webpackConfig(entryFilePath, outputDirectoryPath, isModule, isNode, addShebang){
   let entry = {}
   let fileName = path.parse(entryFilePath).name;
   entry[fileName] = entryFilePath
@@ -35,19 +35,23 @@ function webpackConfig(entryFilePath, outputDirectoryPath, isModule, isNode){
       }
     ]
   }
+  config.plugins = [];
+  if (isNode) {
+    if (addShebang) {
+      config.plugins.push(new webpack.BannerPlugin('#!/usr/bin/env node', {raw: true, entryOnly: true}));
+    }
+    config.target = 'node'
+    config.output.libraryTarget = 'commonjs2'
+    if (directoryExistsSync("node_modules")) {
+      console.log('dir exists')
+      config.externals = fs.readdirSync("node_modules")
+    }
+  }
 
   if (isModule) {
-      console.log('woooo')
     config.output.library = 'babel-webpack-package-boilerplate'
     config.output.libraryTarget = 'commonjs2'
     // What is this for?? Node apps?
-    if (isNode) {
-      // console.log('woooo')
-      if (directoryExistsSync("node_modules")) {
-        console.log('dir exists')
-        config.externals = fs.readdirSync("node_modules")
-      }
-    }
   }
 
 
@@ -58,12 +62,19 @@ function distifyNpmPackage(entryFilePath, outputDirectoryPath, opts){
   opts = opts || {}
   opts.isModule = opts.isModule || false
   opts.isNode = opts.isNode || false 
-  webpack(webpackConfig(entryFilePath, outputDirectoryPath, opts.isModule, opts.isNode), function(err, stats) {
-    // Do something
-    // console.log(err)
-    if (stats.compilation.errors.length > 0) {
-      console.log("There were error compiling:")
-      console.log(stats.compilation.errors)
+  opts.addShebang = opts.addShebang|| false 
+  webpack(webpackConfig(entryFilePath, outputDirectoryPath, opts.isModule, opts.isNode, opts.addShebang), function(err, stats) {
+    if (err || (stats.compilation && stats.compilation.errors && stats.compilation.errors.length > 0)) {
+      console.log("----- There were some issues building -----")
+      if (err) {
+        console.log("Error: " + err)
+      }
+      if (stats.compilation && stats.compilation.errors && stats.compilation.errors.length > 0) {
+        console.log("Compilation Errors:")
+        console.log(stats.compilation.errors)
+      }
+    } else {
+      console.log("Successfully Built to '" + path.resolve(outputDirectoryPath) + "' directory.")
     }
   });
 }
