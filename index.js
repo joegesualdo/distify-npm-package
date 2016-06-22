@@ -56,8 +56,8 @@ function webpackConfig(entryFilePath, outputDirectoryPath, isModule, isNode){
 
 function distifyNpmPackage(entryFilePath, outputDirectoryPath, opts){
   opts = opts || {}
-  opts.isModule = opts.isModule || true
-  opts.isNode = opts.isNode || true
+  opts.isModule = opts.isModule || false
+  opts.isNode = opts.isNode || false 
   webpack(webpackConfig(entryFilePath, outputDirectoryPath, opts.isModule, opts.isNode), function(err, stats) {
     // Do something
     // console.log(err)
