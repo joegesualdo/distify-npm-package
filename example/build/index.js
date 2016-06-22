@@ -45,7 +45,7 @@ module.exports =
 /* 0 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -61,10 +61,13 @@ module.exports =
 
 	  var percentOff = percent / 100 * amount;
 	  console.log(percentOff);
+	  console.log('woooooo');
 	  return percentOff;
 	};
 
 	;
+
+	// console.log("wooooo")
 
 /***/ }
 /******/ ]);
