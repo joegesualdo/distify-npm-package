@@ -2,12 +2,12 @@ var webpack = require('webpack')
 var path = require('path');
 var fs = require('fs');
 
-function webpackConfig(entryFilePath, outputDirectoryPath, isModule, isNode, addShebang){
+function webpackConfig(entryFilePath, outputDirectoryPath, isModule, isNode, addShebang, isReact){
   let entry = {}
   let fileName = path.parse(entryFilePath).name;
   entry[fileName] = entryFilePath
 
-  config = {}
+  let config = {}
   config.debug = false
   config.entry = entry
 
@@ -16,12 +16,31 @@ function webpackConfig(entryFilePath, outputDirectoryPath, isModule, isNode, add
     filename: '[name].js',
   }
   config.resolve = {
-      modulesDirectories: [
-        'node_modules',
-      ]
-    },
-  config.module = {
-    loaders: [
+    modulesDirectories: [
+      'node_modules',
+    ],
+  };
+
+  config.module = {};
+  config.module.loaders = [];
+  // Setup babel-loader
+  if (isReact) {
+    config.module.loaders.push(
+      {
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        loader: 'babel',
+        query: {
+          presets: [
+            'es2015',
+            'stage-0', // Gives use access to propety initializers
+            'react',
+          ],
+        },
+      }
+    );
+  } else {
+    config.module.loaders.push(
       {
         test: /\.js$/,
         exclude: /node_modules/,
@@ -33,7 +52,36 @@ function webpackConfig(entryFilePath, outputDirectoryPath, isModule, isNode, add
           ],
         },
       }
-    ]
+    );
+  }
+
+  if (isReact) {
+    config.module.loaders.push(
+      {
+        test: /\.css$/,
+        loaders: [
+          'style',
+        // If we want to use the style.className syntax:
+          'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]&sourceMap',
+          // 'css?&sourceMap',
+          'postcss-loader',
+        ],
+      }
+    );
+  }
+
+  if (isReact) {
+    config.postcss = function (webpack) {
+      return [
+        require("postcss-import")({ addDependencyTo: webpack }),
+        require("postcss-url")(),
+        require('postcss-cssnext')(),
+        require('precss')(),
+        require("postcss-color-function"),
+        // precss,
+        // postcssCssnext
+      ];
+    }
   }
   config.plugins = [];
   if (isNode) {
@@ -43,7 +91,6 @@ function webpackConfig(entryFilePath, outputDirectoryPath, isModule, isNode, add
     config.target = 'node'
     config.output.libraryTarget = 'commonjs2'
     if (directoryExistsSync("node_modules")) {
-      console.log('dir exists')
       config.externals = fs.readdirSync("node_modules")
     }
   }
@@ -61,9 +108,10 @@ function webpackConfig(entryFilePath, outputDirectoryPath, isModule, isNode, add
 function distifyNpmPackage(entryFilePath, outputDirectoryPath, opts){
   opts = opts || {}
   opts.isModule = opts.isModule || false
-  opts.isNode = opts.isNode || false 
-  opts.addShebang = opts.addShebang|| false 
-  webpack(webpackConfig(entryFilePath, outputDirectoryPath, opts.isModule, opts.isNode, opts.addShebang), function(err, stats) {
+  opts.addShebang = opts.addShebang|| false;
+  opts.isReact = opts.isReact || false;
+  opts.isNode = opts.isNode || opts.isReact || false; 
+  webpack(webpackConfig(entryFilePath, outputDirectoryPath, opts.isModule, opts.isNode, opts.addShebang, opts.isReact), function(err, stats) {
     if (err || (stats.compilation && stats.compilation.errors && stats.compilation.errors.length > 0)) {
       console.log("----- There were some issues building -----")
       if (err) {

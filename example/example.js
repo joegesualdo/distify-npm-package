@@ -1,3 +1,6 @@
 var distifyPackage = require("./../index.js");
 
-distifyPackage('./src/index.js', "./build")
+distifyPackage('./src/react.jsx', "./build", {
+  isReact: true,
+  // isModule: true
+})
