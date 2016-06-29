@@ -93,6 +93,8 @@ function webpackConfig(entryFilePath, outputDirectoryPath, isModule, isNode, add
     if (directoryExistsSync("node_modules")) {
       config.externals = fs.readdirSync("node_modules")
     }
+  } else {
+    config.target = 'web';
   }
 
   if (isModule) {
@@ -108,9 +110,9 @@ function webpackConfig(entryFilePath, outputDirectoryPath, isModule, isNode, add
 function distifyNpmPackage(entryFilePath, outputDirectoryPath, opts){
   opts = opts || {}
   opts.isModule = opts.isModule || false
-  opts.addShebang = opts.addShebang|| false;
+  opts.addShebang = opts.addShebang || false;
   opts.isReact = opts.isReact || false;
-  opts.isNode = opts.isNode || opts.isReact || false; 
+  opts.isNode = opts.isNode || false;
   webpack(webpackConfig(entryFilePath, outputDirectoryPath, opts.isModule, opts.isNode, opts.addShebang, opts.isReact), function(err, stats) {
     if (err || (stats.compilation && stats.compilation.errors && stats.compilation.errors.length > 0)) {
       console.log("----- There were some issues building -----")

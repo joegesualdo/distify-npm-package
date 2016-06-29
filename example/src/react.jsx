@@ -1,5 +1,7 @@
 import React from 'react';
-import style from './test.css'
+import ReactDOM from 'react-dom';
+import style from './test.css';
+console.log('wooo')
 
 const propTypes = {
 };
@@ -26,4 +28,8 @@ class TestComponent extends React.Component {
 TestComponent.propTypes = propTypes;
 TestComponent.defaultProps = defaultProps;
 
-export default TestComponent;
+ReactDOM.render(
+  <TestComponent />,
+  document.querySelector("#app")
+);
+
