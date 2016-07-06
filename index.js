@@ -91,8 +91,8 @@ function webpackConfig(entryFilePath, outputDirectoryPath, isModule, isNode, add
     config.target = 'node'
     // https://github.com/webpack/webpack/issues/1599
     config.node = {
-      __dirname: true,
-      __filename: true,
+      __dirname: false,
+      __filename: false,
     };
     config.output.libraryTarget = 'commonjs2';
     if (directoryExistsSync("node_modules")) {
