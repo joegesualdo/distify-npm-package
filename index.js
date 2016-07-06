@@ -89,7 +89,12 @@ function webpackConfig(entryFilePath, outputDirectoryPath, isModule, isNode, add
       config.plugins.push(new webpack.BannerPlugin('#!/usr/bin/env node', {raw: true, entryOnly: true}));
     }
     config.target = 'node'
-    config.output.libraryTarget = 'commonjs2'
+    // https://github.com/webpack/webpack/issues/1599
+    config.node = {
+      __dirname: false,
+      __filename: false,
+    };
+    config.output.libraryTarget = 'commonjs2';
     if (directoryExistsSync("node_modules")) {
       config.externals = fs.readdirSync("node_modules")
     }
