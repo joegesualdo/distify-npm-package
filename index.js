@@ -89,14 +89,14 @@ function webpackConfig(entryFilePath, outputDirectoryPath, isModule, isNode, add
       config.plugins.push(new webpack.BannerPlugin('#!/usr/bin/env node', {raw: true, entryOnly: true}));
     }
     // Get __dirname to work;
-    config.plugins.push(new webpack.DefinePlugin({ __dirname: 'process.cwd()'}))
+    // config.plugins.push(new webpack.DefinePlugin({ __dirname: 'process.cwd()'}))
 
     config.target = 'node'
     // https://github.com/webpack/webpack/issues/1599
-    // config.node = {
-    //   __dirname: true,
-    //   __filename: false,
-    // };
+    config.node = {
+      __dirname: false,
+      __filename: false,
+    };
     config.output.libraryTarget = 'commonjs2';
     if (directoryExistsSync("node_modules")) {
       config.externals = fs.readdirSync("node_modules")

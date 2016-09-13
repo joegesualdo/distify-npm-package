@@ -1,6 +1,6 @@
 {
   "name": "distify-npm-package",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "Write npm modules using latest javascript features.",
   "main": "index.js",
   "scripts": {
